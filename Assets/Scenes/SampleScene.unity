@@ -1043,6 +1043,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1998405733}
+  - component: {fileID: 1998405734}
   m_Layer: 0
   m_Name: PropulsionPoints
   m_TagString: Untagged
@@ -1066,6 +1067,21 @@ Transform:
   m_Father: {fileID: 512623627}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1998405734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998405732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e013c782a0381f45bf7242b5f0e7ad5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PropulsionPoints: []
+  fuelTank1: 100
+  fuelTank2: 100
 --- !u!1 &2031215967
 GameObject:
   m_ObjectHideFlags: 0
@@ -1308,6 +1324,7 @@ GameObject:
   - component: {fileID: 2062443602}
   - component: {fileID: 2062443601}
   - component: {fileID: 2062443604}
+  - component: {fileID: 2062443605}
   m_Layer: 0
   m_Name: PropulsionPoint1
   m_TagString: Untagged
@@ -1410,6 +1427,33 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2062443605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062443599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f3cf4ea4b95f15438c62c6750db1278, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cylinders: 1
+  cylinderDisplacement: 2
+  engineDisplacement: 0
+  torque: 0
+  RPM: 0
+  fuelUsage: 0
+  engineFuelType: 0
+  fuelType:
+    name: 
+    specificEnergy: 0
+    energyDensity: 0
+  propellerSize: 0
+  resistance: 0
+  propulsionForce: 0
+  shipController: {fileID: 0}
 --- !u!1 &2088387474
 GameObject:
   m_ObjectHideFlags: 0

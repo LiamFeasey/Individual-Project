@@ -243,17 +243,17 @@ public class ShipControllerScript : MonoBehaviour
         if (engineIgnitionOn)
         {
             //Add propulsion based on throttle and steering
-            for (int i = 0; i < PropulsionPoints.Count; i++)
-            {
-                PropulsionPoints[i].GetComponent<Rigidbody>().AddRelativeForce(Vector3.down * (currentThrottle * totalHorsePower), ForceMode.Force);
-            }
+            //for (int i = 0; i < PropulsionPoints.Count; i++)
+            //{
+            //    PropulsionPoints[i].GetComponent<Rigidbody>().AddRelativeForce(Vector3.down * (currentThrottle * totalHorsePower), ForceMode.Force);
+            //}
             for (int i = 0; i < SteeringPoints.Count; i++)
             {
-                SteeringPoints[i].GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * ((currentSteering + steeringTrim) * (speed*0.5f)), ForceMode.Force);
+                SteeringPoints[i].GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * ((currentSteering + steeringTrim) * (speed * 0.5f)), ForceMode.Force);
             }
         }
 
-        
+
     }
 
     //Used when the user doesn't want the camera to roll and pitch with the ship.
@@ -270,5 +270,18 @@ public class ShipControllerScript : MonoBehaviour
         return updatedQuaternion;
     }
 
+    public float getCurrentThrottle()
+    {
+        return currentThrottle;
+    }
 
+    public float getSpeed()
+    {
+        return speed;
+    }
+
+    public bool getIgnition()
+    {
+        return engineIgnitionOn;
+    }    
 }
