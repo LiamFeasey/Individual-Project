@@ -1080,8 +1080,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PropulsionPoints: []
-  fuelTank1: 100
-  fuelTank2: 100
+  fuelTanks: []
+  totalFuelTanks: 1
+  fuelTankSize: 200
 --- !u!1 &2031215967
 GameObject:
   m_ObjectHideFlags: 0
@@ -1450,10 +1451,12 @@ MonoBehaviour:
     name: 
     specificEnergy: 0
     energyDensity: 0
-  propellerSize: 0
+  propellerSize: 1
   resistance: 0
   propulsionForce: 0
+  isBelowWater: 0
   shipController: {fileID: 0}
+  engineController: {fileID: 0}
 --- !u!1 &2088387474
 GameObject:
   m_ObjectHideFlags: 0

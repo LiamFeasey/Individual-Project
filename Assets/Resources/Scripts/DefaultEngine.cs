@@ -18,9 +18,12 @@ public class DefaultEngine : MonoBehaviour
     [Tooltip("[Warning!] Increasing Cylinders and Cylinder Displacement too far with a light ship will cause flipping!")]
     [Range(1, 20f)]
     [SerializeField] int cylinders;
+
     [Tooltip("[Warning!] Increasing Cylinders and Cylinder Displacement too far with a light ship will cause flipping!")]
     [Range(1, 20f)]
     [SerializeField] float cylinderDisplacement;
+
+    [Tooltip("The total engine displacement, calculated by multiplying the cylinder displacement by the number of cylinders")]
     [SerializeField] float engineDisplacement;
     [SerializeField] float torque;
     [Range(0, 5000)]
@@ -29,7 +32,9 @@ public class DefaultEngine : MonoBehaviour
     [SerializeField] FuelType engineFuelType;
     [Tooltip("The type of fuel that's being used and its properties (Name, Specific Energy, and Energy Density)")]
     [SerializeField] Fuel fuelType;//The fuel type struct that will contain all the relevant details about the fuel for this engine.
+    [SerializeField] bool fuelAvailable = true;
     float throttle;
+    [SerializeField] bool ignition = false;
 
 
     [Header("Propeller Properties")]
@@ -43,7 +48,11 @@ public class DefaultEngine : MonoBehaviour
 
 
     [SerializeField] ShipControllerScript shipController;
+    [SerializeField] EngineController engineController;
     WaterControlScript waterControlScript;
+
+    float engineUseFuelTime = 1.0f;
+    float timer = 0.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -58,7 +67,12 @@ public class DefaultEngine : MonoBehaviour
                 break;
         }
         shipController = gameObject.transform.parent.parent.gameObject.GetComponent<ShipControllerScript>();
+        engineController = gameObject.transform.parent.gameObject.GetComponent<EngineController>();
         waterControlScript = GameObject.Find("waterPlane").GetComponent<WaterControlScript>();
+
+        engineDisplacement = cylinderDisplacement * cylinders;
+
+        RPM = 0;
     }
 
     // Update is called once per frame
@@ -67,44 +81,70 @@ public class DefaultEngine : MonoBehaviour
         //Check if the propulsion object is below the water.
         checkIsBelowWater();
 
+        timer += Time.deltaTime;
+        timer = timer > 1.0f ? 1.0f : timer;
 
         resistance = waterControlScript.density / propellerSize * (1.0f - waterControlScript.dynamicViscosity) * shipController.getSpeed();
         throttle = shipController.getCurrentThrottle();
+
         if (!shipController)
         {
             shipController = gameObject.transform.parent.parent.gameObject.GetComponent<ShipControllerScript>();
         }
-        else
+        else if (shipController.getIgnition())
         {
-            if (RPM > (int)Mathf.Lerp(0, 5000.0f, throttle / 100))
+            //Check if it's been long enough to collect fuel again
+            if (timer >= engineUseFuelTime)
             {
-                RPM += (int)throttle - (int)(throttle * resistance);
-                if (RPM > 5000)
-                {
-                    RPM = 5000;
-                }
+                fuelAvailable = engineController.requestFuel(fuelUsage);
+                timer = 0.0f;
             }
-            else if (RPM < (int)Mathf.Lerp(0, 5000.0f, throttle / 100))
+            
+            if (fuelAvailable)
             {
-                RPM -= (int)throttle - (int)(throttle * resistance);
-                if (RPM < 0)
+                ignition = true;
+                if (RPM < (int)Mathf.Lerp(0, 5000.0f, throttle / 100) && ignition)
+                {
+                    RPM += (int)throttle - (int)(RPM / resistance)/10;
+                }
+                else if (RPM > (int)Mathf.Lerp(0, 5000.0f, throttle / 100) && ignition)
+                {
+                    RPM -= (int)throttle - (int)(throttle * resistance);
+                }
+                if (RPM > 5000 && ignition)
+                {
+                   RPM = 5000;
+                }
+                else if (RPM < -0)
+                {
+                    RPM = 0;
+                }
+
+
+                propulsionForce = calculateHorsePower(cylinders, cylinderDisplacement, RPM, fuelType);
+
+                fuelUsage = calculateFuelUsage();
+            }
+            else
+            {
+                ignition = false;
+                RPM -= 100;
+                if (RPM < -0)
                 {
                     RPM = 0;
                 }
             }
-            if (RPM > 5000)
+            
+        }
+        else if (!shipController.getIgnition() || !fuelAvailable)
+        {
+            //Either the engine is off or there's no fuel left!
+            if (RPM > 0)
             {
-                RPM = 5000;
-            }
-            else if (RPM < 0)
-            {
-                RPM = 0;
+                RPM -= 100;
             }
 
-            
-            
-            propulsionForce = calculateHorsePower(cylinders, cylinderDisplacement, RPM, fuelType);
-            print("Propulsion Force" + propulsionForce);
+            fuelUsage = 0;
         }
 
         
@@ -141,15 +181,26 @@ public class DefaultEngine : MonoBehaviour
         }
     }
 
+    //Get fuel usage based on current engine RPM, taking the volume of fuel vapor into consideration
+    float calculateFuelUsage()
+    {
+        return (engineDisplacement * (RPM/5000)) * 0.06f;
+    }
+
+    //Return the horse power of this engine
     public float getHorsePower()
     {
-        //print(propulsionForce);
         return propulsionForce;
     }
 
+    //return whether this engine is below water
     public bool getIsBelowWater()
     {
         return isBelowWater;
     }
 
+    public bool getIgnition()
+    {
+        return ignition;
+    }
 }

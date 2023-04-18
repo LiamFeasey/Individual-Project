@@ -8,7 +8,7 @@ using UnityEngine;
 {
     public string name;//The fuels name
     public float specificEnergy;//the specific energy of the fuel in MJ/kg
-    public float energyDensity;//The energy density of the fuel in MJ/L
+    public float energyDensity;//The energy density of the fuel in MJ/
 
     public Fuel(string initName, float initEnergy, float initDensity)
     {
@@ -28,8 +28,9 @@ public class EngineController : MonoBehaviour
     public static Fuel Diesel = new("Diesel", 45.6f, 38.6f);//Diesel fuel
     public static Fuel Petrol = new("Petrol", 46.4f, 34.3f);//Petrol fuel
     [Tooltip("The total amount of fuel in the tanks")]
-    [SerializeField] public float fuelTank1 = 100.0f;
-    [SerializeField] public float fuelTank2 = 100.0f;
+    [SerializeField] List<float> fuelTanks = new List<float> { };
+    [SerializeField] int totalFuelTanks;
+    [SerializeField] float fuelTankSize;
 
 
     ShipControllerScript shipController;
@@ -44,6 +45,11 @@ public class EngineController : MonoBehaviour
         }
 
         shipController = gameObject.transform.parent.gameObject.GetComponent<ShipControllerScript>();
+
+        for (int i = 0; i < totalFuelTanks; i++)
+        {
+            fuelTanks.Add(fuelTankSize);
+        }
     }
 
     // Update is called once per frame
@@ -59,17 +65,41 @@ public class EngineController : MonoBehaviour
             //Add propulsion based on throttle and steering
             for (int i = 0; i < PropulsionPoints.Count; i++)
             {
-                switch (PropulsionPoints[i].GetComponent<DefaultEngine>().getIsBelowWater())
+                bool engineRunning;
+                engineRunning = PropulsionPoints[i].GetComponent<DefaultEngine>().getIgnition();
+                if (engineRunning)
                 {
-                    case true:
-                        PropulsionPoints[i].GetComponent<Rigidbody>().AddRelativeForce(Vector3.down * (shipController.getCurrentThrottle() * (PropulsionPoints[i].GetComponent<DefaultEngine>().getHorsePower())), ForceMode.Force);
-                        break;
-                    case false:
-                        PropulsionPoints[i].GetComponent<Rigidbody>().AddRelativeForce(Vector3.down * ((shipController.getCurrentThrottle() * (PropulsionPoints[i].GetComponent<DefaultEngine>().getHorsePower())) * 0.01f), ForceMode.Force);
-                        break;
+                    switch (PropulsionPoints[i].GetComponent<DefaultEngine>().getIsBelowWater())
+                    {
+                        case true:
+                            PropulsionPoints[i].GetComponent<Rigidbody>().AddRelativeForce(Vector3.down * (shipController.getCurrentThrottle() * (PropulsionPoints[i].GetComponent<DefaultEngine>().getHorsePower())), ForceMode.Force);
+                            break;
+                        case false:
+                            PropulsionPoints[i].GetComponent<Rigidbody>().AddRelativeForce(Vector3.down * ((shipController.getCurrentThrottle() * (PropulsionPoints[i].GetComponent<DefaultEngine>().getHorsePower())) * 0.01f), ForceMode.Force);
+                            break;
+                    }
                 }
+                
                 
             }
         }
+    }
+
+    public bool requestFuel(float fuelUsage)
+    {
+        float averegedFuelUse = fuelUsage / fuelTanks.Count;
+
+        for (int i = 0; i < fuelTanks.Count; i++)
+        {
+            if (fuelTanks[i] > averegedFuelUse)
+            {
+                fuelTanks[i] -= averegedFuelUse;
+            }
+            else
+            { 
+                return false; 
+            }
+        }
+        return true;
     }
 }
