@@ -48,15 +48,9 @@ public class FloodingManager : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        foreach (ContactPoint contact in collision.contacts)
+        if (collision.relativeVelocity.magnitude > 10)//Impact was hard enough to put a hole in the hull!!
         {
-            //Debug.DrawRay(contact.point, contact.normal, Color.red, 10.0f);
-            //Debug.LogWarning("Collision! " + contact.point);
-            Debug.LogWarning("Collision! Other collider: " + contact.point);
-        }
-        if (collision.relativeVelocity.magnitude > 2)//Impact was hard enough to put a hole in the hull!!
-        {
-            Debug.LogWarning("BANG");
+            Debug.Log("BANG!! That crash was a magnitude of: " + collision.relativeVelocity.magnitude);
 
 
             holes.Add(new GameObject());
