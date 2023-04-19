@@ -167,9 +167,9 @@ public class DefaultEngine : MonoBehaviour
 
         var list = meshFilter.mesh.vertices.Select(transform.TransformPoint).OrderBy(v => v.y).ToList();
 
-        Debug.Log(list[0]); // lowest position
+        //Debug.Log(list[0]); // lowest position
 
-        Debug.Log(list.Last()); // highest position
+        //Debug.Log(list.Last()); // highest position
 
         if (list[0].y < 0.0f)
         {
