@@ -91,6 +91,7 @@ public class FloodingManager : MonoBehaviour
         float hydraulicHead = y;
         float gravity = 9.81f;
         float resultant = hydraulicHead * gravity;
+        resultant *= 2;
         resultant = Mathf.Sqrt(resultant);
         resultant *= (Mathf.PI * Mathf.Pow(crossSection, 2));
 

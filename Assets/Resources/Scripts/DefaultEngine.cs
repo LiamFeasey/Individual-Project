@@ -155,8 +155,7 @@ public class DefaultEngine : MonoBehaviour
     {
         float result;
 
-        result = (fuelType.energyDensity * (cylinderDisplacement * cylinders)) / 5252;
-        result = result * RPM;
+        result = ((fuelType.energyDensity * (cylinderDisplacement * cylinders)) * RPM) / 5252;
 
         return result;
     }
@@ -166,10 +165,6 @@ public class DefaultEngine : MonoBehaviour
         var meshFilter = GetComponent<MeshFilter>();
 
         var list = meshFilter.mesh.vertices.Select(transform.TransformPoint).OrderBy(v => v.y).ToList();
-
-        //Debug.Log(list[0]); // lowest position
-
-        //Debug.Log(list.Last()); // highest position
 
         if (list[0].y < 0.0f)
         {
