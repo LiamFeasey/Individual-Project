@@ -599,7 +599,7 @@ MonoBehaviour:
   currentSteering: 0
   engineIgnitionOn: 0
   speed: 0
-  steeringTrim: 23
+  steeringTrim: 25
   currentShipFloatingScript: {fileID: 0}
   waterControlScript: {fileID: 0}
   playerCamera: {fileID: 963194227}
@@ -646,6 +646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee061d0b315816241960a99718443b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  holes: []
 --- !u!1 &597095134
 GameObject:
   m_ObjectHideFlags: 0
