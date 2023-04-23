@@ -47,7 +47,7 @@ public class FloodingManager : MonoBehaviour
             {
                 if (hole.transform.position.y <= 0.0f)//Make sure the hole is actually below the water!!
                 {
-                    hole.GetComponent<Rigidbody>().mass += calculateTheoreticalDischarge(hole.transform.position.y, hole.GetComponent<HoleDetails>().getHoleRadius()) * waterControlScript.density;
+                    hole.GetComponent<Rigidbody>().mass += calculateTheoreticalDischarge(hole.transform.position.y, hole.GetComponent<HoleDetails>().getHoleRadius()) * (waterControlScript.density / 1000);
                 }
             }
             timer = 0.0f;
