@@ -26,6 +26,10 @@ public class ShipControllerScript : MonoBehaviour
     [SerializeField] List<GameObject> CameraPoints = new List<GameObject>();
     private GameObject localCameraPointsObject;
 
+
+
+    [Space(25)]
+
     //Total Horse Power
     [Tooltip("The total combined horsepower of all the ships engines")]
     [Header("Ship Statistics")]
@@ -58,8 +62,10 @@ public class ShipControllerScript : MonoBehaviour
 
     [Tooltip("Trim applied to steering in the case the ship is pulling to one side or the other without steering input")]
     [SerializeField] float steeringTrim;
-    
 
+
+
+    [Space(25)]
 
     [Header("Scripts")]
     //Floating Script associated with current ship
@@ -70,12 +76,17 @@ public class ShipControllerScript : MonoBehaviour
     [Tooltip("The water control sript being used by the current scene")]
     [SerializeField] WaterControlScript waterControlScript = null;
 
+
+
+    [Space(25)]
+
     [Header("Player Compnents")]
 
     [Tooltip("The camera object that the player sees through so that it can be manipulated as needed by the script")]
     [SerializeField] Camera playerCamera = null;
 
 
+    [Space(25)]
 
     [Header("Camera Options")]
 
@@ -243,17 +254,17 @@ public class ShipControllerScript : MonoBehaviour
         if (engineIgnitionOn)
         {
             //Add propulsion based on throttle and steering
-            for (int i = 0; i < PropulsionPoints.Count; i++)
-            {
-                PropulsionPoints[i].GetComponent<Rigidbody>().AddRelativeForce(Vector3.down * (currentThrottle * totalHorsePower), ForceMode.Force);
-            }
+            //for (int i = 0; i < PropulsionPoints.Count; i++)
+            //{
+            //    PropulsionPoints[i].GetComponent<Rigidbody>().AddRelativeForce(Vector3.down * (currentThrottle * totalHorsePower), ForceMode.Force);
+            //}
             for (int i = 0; i < SteeringPoints.Count; i++)
             {
-                SteeringPoints[i].GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * ((currentSteering + steeringTrim) * (speed*0.5f)), ForceMode.Force);
+                SteeringPoints[i].GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * ((currentSteering + steeringTrim) * (speed * 0.5f)), ForceMode.Force);
             }
         }
 
-        
+
     }
 
     //Used when the user doesn't want the camera to roll and pitch with the ship.
@@ -270,5 +281,18 @@ public class ShipControllerScript : MonoBehaviour
         return updatedQuaternion;
     }
 
+    public float getCurrentThrottle()
+    {
+        return currentThrottle;
+    }
 
+    public float getSpeed()
+    {
+        return speed;
+    }
+
+    public bool getIgnition()
+    {
+        return engineIgnitionOn;
+    }    
 }
