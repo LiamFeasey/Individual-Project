@@ -6,6 +6,7 @@ public class FloodingManager : MonoBehaviour
 {
     MeshFilter shipMeshFilter;
     GameObject holesObject;//Where the holes will be placed to keep them in one place
+    WaterControlScript waterControlScript;
 
     [Tooltip("The current list of holes in the ship. The less the better!")]
     [SerializeField] List<GameObject> holes = new List<GameObject>();
@@ -18,11 +19,18 @@ public class FloodingManager : MonoBehaviour
     {
         shipMeshFilter = gameObject.GetComponent<MeshFilter>();
         holesObject = gameObject.transform.Find("Holes").gameObject;
+        waterControlScript = GameObject.Find("waterPlane").GetComponent<WaterControlScript>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (waterControlScript == null)
+        {
+            waterControlScript = GameObject.Find("waterPlane").GetComponent<WaterControlScript>();
+        }
+
+
         timer += Time.deltaTime;
         
         if (holesObject == null)
@@ -39,7 +47,7 @@ public class FloodingManager : MonoBehaviour
             {
                 if (hole.transform.position.y <= 0.0f)//Make sure the hole is actually below the water!!
                 {
-                    hole.GetComponent<Rigidbody>().mass += calculateTheoreticalDischarge(hole.transform.position.y, hole.GetComponent<HoleDetails>().getHoleRadius());
+                    hole.GetComponent<Rigidbody>().mass += calculateTheoreticalDischarge(hole.transform.position.y, hole.GetComponent<HoleDetails>().getHoleRadius()) * waterControlScript.density;
                 }
             }
             timer = 0.0f;

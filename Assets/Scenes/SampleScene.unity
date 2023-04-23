@@ -1333,9 +1333,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f4e94b09cb84447a98f361248508f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  temperature: 0
   dynamicViscosity: 0
-  kinematicViscosity: 0
+  temperature: -50
   density: 0
   murkiness: 0
 --- !u!23 &2052074055
