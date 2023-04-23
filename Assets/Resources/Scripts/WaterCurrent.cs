@@ -109,7 +109,6 @@ public class WaterCurrent : MonoBehaviour
             {
                 vesselRigidbody.AddForceAtPosition((Vector3.forward * waterFlowGrid[floatingPointX][floatingPointZ].speed) + waterFlowGrid[floatingPointX][floatingPointZ].direction, floatingPoint.transform.position, ForceMode.Force);
                 count++;
-                Debug.Log("X: " + floatingPointX + " Z: " + floatingPointZ);
             }
         }
     }
