@@ -26,10 +26,14 @@ public class FloatingScript : MonoBehaviour
     Rigidbody vesselRigidbody;
 
     GameObject waterObject = null;
+    //Scripts used to control different aspects of the simulation
     WaterControlScript waterControlScript = null;
+    WaterCurrent waterCurrentScript;
 
     bool isSubmerged;
 
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +42,8 @@ public class FloatingScript : MonoBehaviour
 
         waterObject = GameObject.Find("waterPlane");
         waterControlScript = waterObject.GetComponent<WaterControlScript>();
+        waterCurrentScript = waterObject.GetComponent<WaterCurrent>();
+
 
         isSubmerged = false;
 
@@ -58,6 +64,12 @@ public class FloatingScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (waterCurrentScript == null)
+        {
+            waterCurrentScript = waterObject.GetComponent<WaterCurrent>();
+        }
+
+
         totalFloatingPointsSubmerged = 0;
         for (int i = 0; i < floatingPoints.Count; i++)
         {
@@ -67,6 +79,9 @@ public class FloatingScript : MonoBehaviour
                 totalFloatingPointsSubmerged += 1;
                 //Add foce to the floating point that is submerged. The deeper the floating point is the stronger ther force will be.
                 vesselRigidbody.AddForceAtPosition(Vector3.up * bouyancyStrength * (Mathf.Abs(difference)*0.1f), floatingPoints[i].transform.position, ForceMode.Force);
+
+
+                waterCurrentScript.applyWaterCurrent(vesselRigidbody, floatingPoints);
 
                 //If the vessel isn't already set as submerged then set is as true
                 if (!isSubmerged)
