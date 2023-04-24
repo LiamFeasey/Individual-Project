@@ -76,11 +76,17 @@ public class ShipControllerScript : MonoBehaviour
     [Tooltip("The water control sript being used by the current scene")]
     [SerializeField] WaterControlScript waterControlScript = null;
 
+    /// <summary>
+    /// Object Interaction Script. Controls how objects are attached and released from the ship
+    /// </summary>
+    [Tooltip("The object interaction script being used by the current ship")]
+    [SerializeField] ObjectInteraction objectInteractionScript;
+
 
 
     [Space(25)]
 
-    [Header("Player Compnents")]
+    [Header("Player Components")]
 
     [Tooltip("The camera object that the player sees through so that it can be manipulated as needed by the script")]
     [SerializeField] Camera playerCamera = null;
@@ -101,19 +107,23 @@ public class ShipControllerScript : MonoBehaviour
     void Start()
     {
         //Find the FloatingScript attached to the current ship and set the floating scripts value to it
-        currentShipFloatingScript = this.gameObject.GetComponent<FloatingScript>();
+        currentShipFloatingScript = gameObject.GetComponent<FloatingScript>();
         
         //Find the WaterControlScript and save a reference to it in the water contron script variable
-        waterControlScript = this.gameObject.GetComponent<WaterControlScript>();
+        waterControlScript = gameObject.GetComponent<WaterControlScript>();
+
+        //Find the objectInteraction script and save a reference to it
+        objectInteractionScript = gameObject.GetComponent<ObjectInteraction>();
+
 
         //populate propulsion points array by finding objects in the propulsion section of a ship.
-        localPropulsionPointsObject = this.gameObject.transform.Find("PropulsionPoints").gameObject;
+        localPropulsionPointsObject = gameObject.transform.Find("PropulsionPoints").gameObject;
         for (int i = 0; i < localPropulsionPointsObject.transform.childCount; i++)
         {
             PropulsionPoints.Add(localPropulsionPointsObject.transform.GetChild(i).gameObject);
         }
         //populate steering points array by finding objects in the steering points section of a ship.
-        localSteeringPointsObject = this.gameObject.transform.Find("SteeringPoints").gameObject;
+        localSteeringPointsObject = gameObject.transform.Find("SteeringPoints").gameObject;
         for (int i = 0; i < localSteeringPointsObject.transform.childCount; i++)
         {
             SteeringPoints.Add(localSteeringPointsObject.transform.GetChild(i).gameObject);
@@ -121,7 +131,7 @@ public class ShipControllerScript : MonoBehaviour
         //populate engines array by finding objects in the engines section of a ship.
         //populate bouyancy compartments array by finding objects in the bouyancy compartments section of a ship.
         //populate camera positions array by finding objects in the camera positions section of a ship.
-        localCameraPointsObject = this.gameObject.transform.Find("CameraPositions").gameObject;
+        localCameraPointsObject = gameObject.transform.Find("CameraPositions").gameObject;
         for(int i = 0; i < localCameraPointsObject.transform.childCount; i++)
         {
             CameraPoints.Add(localCameraPointsObject.transform.GetChild(i).gameObject);
@@ -154,6 +164,10 @@ public class ShipControllerScript : MonoBehaviour
         if (waterControlScript == null)
         {
             waterControlScript = this.gameObject.GetComponent<WaterControlScript>();
+        }
+        if (objectInteractionScript == null)
+        {
+            objectInteractionScript = gameObject.GetComponent<ObjectInteraction>();
         }
 
         //Set the players camera to the current camera position chosen.
@@ -237,6 +251,15 @@ public class ShipControllerScript : MonoBehaviour
                 {
                     currentCameraIndex = 0;
                 }
+            }
+            
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                objectInteractionScript.attachObjects();
+            }
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                objectInteractionScript.releaseObjects();
             }
 
 

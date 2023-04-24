@@ -89,7 +89,9 @@ public class FloodingManager : MonoBehaviour
         }
     }
 
-    //Calculate the theoretical Discharge to use in place of actual discharge
+    ///<summary>
+    ///Calculate the theoretical Discharge to use in place of actual discharge
+    /// </summary>
     float calculateTheoreticalDischarge(float y, float crossSection)
     {
         if (y < 0)
