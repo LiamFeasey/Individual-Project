@@ -22,11 +22,14 @@ public class ObjectInteraction : MonoBehaviour
     [Header("Scripts")]
     [SerializeField] ShipControllerScript shipControllerScript;
 
+    GameObject shipHull;
+
 
     // Start is called before the first frame update
     void Start()
     {
         shipControllerScript = gameObject.GetComponent<ShipControllerScript>();
+        shipHull = gameObject;
     }
 
     // Update is called once per frame
@@ -36,6 +39,26 @@ public class ObjectInteraction : MonoBehaviour
         {
             shipControllerScript = gameObject.GetComponent<ShipControllerScript>();
         }
+        if (shipHull == null)
+        {
+            shipHull = gameObject;
+        }
+
+        //If the ship rolls too far then release every attached object
+        if (shipHull)
+        {
+            float x, z;
+
+            //Just makes it easier to read the code!
+            x = shipHull.transform.rotation.x;
+            z = shipHull.transform.rotation.z;
+
+            if (x > 0.44f || x < -0.44f || z > 0.44f || z < -0.44f)
+            {
+                releaseObjects();
+            }
+        }
+        
     }
 
     ///<summary>

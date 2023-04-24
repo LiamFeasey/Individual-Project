@@ -113,26 +113,3 @@ public class WaterCurrent : MonoBehaviour
         }
     }
 }
-
-
-
-
-        //foreach (GameObject floatingPoint in floatingPoints)
-        //{
-        //    for (int i = 0; i < waterFlowGrid.Count; i++)
-        //    {
-        //        for (int k = 0; k < waterFlowGrid[i].Count; k++)
-        //        {
-        //            Vector3 xyz = floatingPoint.transform.position;
-        //            int floatingPointX = (int)xyz.x;
-        //            int floatingPointZ = (int)xyz.z;
-        //            if ((floatingPointX / 100) == i && (floatingPointZ / 100) == i)
-        //            {
-        //                vesselRigidbody.AddForceAtPosition(waterFlowGrid[i][k].direction * waterFlowGrid[i][k].speed, floatingPoints[i].transform.position, ForceMode.Force);
-        //                count++;
-        //                Debug.Log("Beep Boop water is moving: " + count);
-        //            }
-        //        }
-
-        //    }
-        //}
