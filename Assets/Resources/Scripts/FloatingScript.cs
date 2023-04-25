@@ -137,26 +137,24 @@ public class FloatingScript : MonoBehaviour
     public Vector3 getClosestVectorOfWater(GameObject targetMesh, Vector3 point)
     {
         point = targetMesh.transform.InverseTransformPoint(point);
-        float minDistanceSqr = Mathf.Infinity;
+        float minDistance = Mathf.Infinity;
         Vector3 nearestVertex = Vector3.zero;
-        // scan all vertices to find nearest
 
+        // scan all vertices to find nearest
         foreach (Vector3 vertex in targetMesh.GetComponent<MeshFilter>().mesh.vertices)
         {
-            Vector3 diff = point - vertex;
             float difference = Vector3.Distance(vertex, point);
             
-            if (difference < minDistanceSqr)
+            if (difference < minDistance)
             {
-                minDistanceSqr = difference;
+                minDistance = difference;
                 nearestVertex = vertex;
             }
         }
-        // convert nearest vertex back to world space
-        //Debug.Log(transform.TransformPoint(nearestVertex));
-        //Debug.Log(targetMesh.transform.TransformPoint(nearestVertex));
 
-        Debug.DrawLine(point, targetMesh.transform.TransformPoint(nearestVertex), Color.red);
+
+        //Debug.DrawLine(point, targetMesh.transform.TransformPoint(nearestVertex), Color.red);
+        // convert nearest vertex back to world space
         return targetMesh.transform.TransformPoint(nearestVertex);
     }
 }

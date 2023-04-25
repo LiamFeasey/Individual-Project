@@ -168,7 +168,6 @@ public class DefaultEngine : MonoBehaviour
 
         var list = meshFilter.mesh.vertices.Select(transform.TransformPoint).OrderBy(v => v.y).ToList();
 
-        Debug.DrawLine(list[0], floatingScript.getClosestVectorOfWater(GameObject.Find("waterPlane"), list[0]), Color.green);
 
         if (list[0].y < floatingScript.getClosestVectorOfWater(GameObject.Find("waterPlane"), list[0]).y)
         {

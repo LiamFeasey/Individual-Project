@@ -1,6 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
+using Unity.Jobs;
+using Unity.Collections;
+
+
+
 
 
 // wave structures and functions ///////////////////////
@@ -43,11 +49,17 @@ public class waterWaves : MonoBehaviour
 
 	}
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-		StartCoroutine(updateWaves());
+	// Update is called once per frame
+	void FixedUpdate()
+	{
+		Vector3[] meshVertices = waterMesh.mesh.vertices;
+		float time = Time.time;
+		Thread calcWaves = new Thread(() => updateWaves(meshVertices, time));
+		calcWaves.Start();
+		calcWaves.Join();
+		waterMesh.mesh.vertices = meshVertices;
 	}
+
 
 
 
@@ -59,47 +71,40 @@ public class waterWaves : MonoBehaviour
 	/// <summary>
 	/// Update the waves mesh using sine waves.
 	/// </summary>
-	IEnumerator updateWaves()
+	public void updateWaves(Vector3[] inVertices, float time)
 	{
 		///////// TWEAKABLE PARAMETERS //////////////////
-		Mesh updatedWaterMesh = waterMesh.mesh;
-		Vector3[] meshVertices = new Vector3[updatedWaterMesh.vertices.Length];
-		meshVertices = updatedWaterMesh.vertices;
+		Vector3[] meshVertices = new Vector3[inVertices.Length];
+		meshVertices = inVertices;
 
-		float WaveAmp = 1.01f;
-		float WaveFreq = 0.3f;
+		float WaveAmp = 0.30f;
+		float WaveFreq = 0.1f;
 
 		const int NWAVES = 4;
 		Wave[] wave = new Wave[NWAVES]
 		{
 		new Wave(WaveFreq, WaveAmp, 0.5f, new Vector2(0.0f, 0.6f)) ,
 		new Wave(WaveFreq * 2f, WaveAmp*0.5f, 1.3f, new Vector2(0.7f, 0.0f)),
-		new Wave(WaveFreq, WaveAmp, 0.5f, new Vector2(0.1f, 0.2f)),
+		new Wave(WaveFreq, WaveAmp * 2.0f, 0.5f, new Vector2(0.1f, 0.2f)),
 		new Wave(WaveFreq* 4f, WaveAmp * 0.5f, 1.3f, new Vector2(0.5f, 0.1f))
 		};
 
-		for (int i = 0; i < waterMesh.mesh.vertexCount; i++)
+		for (int i = 0; i < meshVertices.Length; i++)
         {
 			Vector4 Po = new Vector4(meshVertices[i][0], meshVertices[i][1], meshVertices[i][2], 1.0f);
 
 			// sum waves	
 			Po.y = 0.0f;
-			// Compute y displacement and derivative for the waves defined above
-			// Add Code Here (Compute y displacement and derivative)
+			// Compute y displacement for the waves
 
 			for (int j = 0; j < NWAVES; j++)
 			{
-				Po.y += evaluateWave(wave[j], Po, Time.time / 2);
+				Po.y += evaluateWave(wave[j], Po, time / 2);
 			}
 			meshVertices[i].y = Po.y;
 		}
-		
-		updatedWaterMesh.vertices = meshVertices;
 
-
-		waterMesh.mesh = updatedWaterMesh;
-
-		yield return null;
+		inVertices = meshVertices;
 	}
 
 
@@ -155,3 +160,56 @@ public class waterWaves : MonoBehaviour
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//public void updateWaves()
+//{
+//	///////// TWEAKABLE PARAMETERS //////////////////
+//	Mesh updatedWaterMesh = waterMesh.mesh;
+//	Vector3[] meshVertices = new Vector3[updatedWaterMesh.vertices.Length];
+//	meshVertices = updatedWaterMesh.vertices;
+
+//	float WaveAmp = 1.01f;
+//	float WaveFreq = 0.3f;
+
+//	const int NWAVES = 4;
+//	Wave[] wave = new Wave[NWAVES]
+//	{
+//		new Wave(WaveFreq, WaveAmp, 0.5f, new Vector2(0.0f, 0.6f)) ,
+//		new Wave(WaveFreq * 2f, WaveAmp*0.5f, 1.3f, new Vector2(0.7f, 0.0f)),
+//		new Wave(WaveFreq, WaveAmp, 0.5f, new Vector2(0.1f, 0.2f)),
+//		new Wave(WaveFreq* 4f, WaveAmp * 0.5f, 1.3f, new Vector2(0.5f, 0.1f))
+//	};
+
+//	for (int i = 0; i < waterMesh.mesh.vertexCount; i++)
+//	{
+//		Vector4 Po = new Vector4(meshVertices[i][0], meshVertices[i][1], meshVertices[i][2], 1.0f);
+
+//		// sum waves	
+//		Po.y = 0.0f;
+//		// Compute y displacement and derivative for the waves defined above
+//		// Add Code Here (Compute y displacement and derivative)
+
+//		for (int j = 0; j < NWAVES; j++)
+//		{
+//			Po.y += evaluateWave(wave[j], Po, Time.time / 2);
+//		}
+//		meshVertices[i].y = Po.y;
+//	}
+
+//	updatedWaterMesh.vertices = meshVertices;
+
+
+//	waterMesh.mesh = updatedWaterMesh;
+//}
