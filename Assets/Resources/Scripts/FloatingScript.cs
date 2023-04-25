@@ -167,7 +167,10 @@ public class FloatingScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        contactPoint = collision.GetContact(0).point;
+        if (collision.transform.tag == "Water")
+        {
+            contactPoint = collision.GetContact(0).point;
+        }
     }
 }
 

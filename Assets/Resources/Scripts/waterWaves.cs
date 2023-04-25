@@ -23,22 +23,30 @@ struct Wave
 
 public class waterWaves : MonoBehaviour
 {
-    Mesh waterMesh;
-    MeshFilter waterMesh2;
+    MeshFilter waterMesh;
+
+
+	[SerializeField] List<Vector3> meshVertices;
+	[SerializeField] List<int> triangles;
+
+	[Header("Water Plane Properties")]
+	[SerializeField] Vector2 planeSize;
+	[SerializeField] int planeResolution;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        waterMesh = gameObject.GetComponent<Mesh>();
-        waterMesh2 = gameObject.GetComponent<MeshFilter>();
-    }
+        waterMesh = gameObject.GetComponent<MeshFilter>();
+		generateCustomePlane();
+		setMesh();
+
+	}
 
     // Update is called once per frame
     void FixedUpdate()
     {
 		updateWaves();
-
 	}
 
 
@@ -54,7 +62,7 @@ public class waterWaves : MonoBehaviour
 	void updateWaves()
 	{
 		///////// TWEAKABLE PARAMETERS //////////////////
-		Mesh updatedWaterMesh = waterMesh2.mesh;
+		Mesh updatedWaterMesh = waterMesh.mesh;
 		Vector3[] meshVertices = new Vector3[updatedWaterMesh.vertices.Length];
 		meshVertices = updatedWaterMesh.vertices;
 
@@ -70,7 +78,7 @@ public class waterWaves : MonoBehaviour
 		new Wave(WaveFreq* 4f, WaveAmp * 0.5f, 1.3f, new Vector2(0.5f, 0.1f))
 		};
 
-		for (int i = 0; i < waterMesh2.mesh.vertexCount; i++)
+		for (int i = 0; i < waterMesh.mesh.vertexCount; i++)
         {
 			Vector4 Po = new Vector4(meshVertices[i][0], meshVertices[i][1], meshVertices[i][2], 1.0f);
 
@@ -89,6 +97,61 @@ public class waterWaves : MonoBehaviour
 		updatedWaterMesh.vertices = meshVertices;
 
 
-		waterMesh2.mesh = updatedWaterMesh;
+		waterMesh.mesh = updatedWaterMesh;
 	}
+
+
+	void generateCustomePlane()
+    {
+		meshVertices = new List<Vector3>();
+		float xPerStep = planeSize.x / (planeResolution - 1);
+		float yPerStep = planeSize.y / (planeResolution - 1);
+
+		for (int y = 0; y < planeResolution; y++)
+		{
+			for (int x = 0; x < planeResolution; x++)
+			{
+				Vector3 vertex = new Vector3(x * xPerStep, 0, y * yPerStep);
+				meshVertices.Add(vertex);
+			}
+		}
+
+		for (int y = 0; y < planeResolution - 1; y++)
+		{
+			for (int x = 0; x < planeResolution - 1; x++)
+			{
+				int i = y * planeResolution + x;
+
+				triangles.Add(i);
+				triangles.Add(i + planeResolution + 1);
+				triangles.Add(i + planeResolution);
+
+				triangles.Add(i);
+				triangles.Add(i + 1);
+				triangles.Add(i + planeResolution + 1);
+			}
+		}
+
+
+		for (int i = 0; i < triangles.Count; i += 3)
+		{
+			int temp = triangles[i + 1];
+			triangles[i + 1] = triangles[i + 2];
+			triangles[i + 2] = temp;
+		}
+	}
+
+
+	void setMesh()
+    {
+		waterMesh.mesh.Clear();
+		waterMesh.mesh.vertices = meshVertices.ToArray();
+		waterMesh.mesh.triangles = triangles.ToArray();
+		waterMesh.mesh.RecalculateNormals();
+
+
+
+	}
+
+
 }
