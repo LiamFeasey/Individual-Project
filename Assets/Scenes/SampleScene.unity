@@ -1447,6 +1447,7 @@ GameObject:
   - component: {fileID: 2052074055}
   - component: {fileID: 2052074053}
   - component: {fileID: 2052074058}
+  - component: {fileID: 2052074059}
   m_Layer: 0
   m_Name: waterPlane
   m_TagString: Untagged
@@ -1551,6 +1552,18 @@ MonoBehaviour:
   waterCurrentDirection: 0
   waterCurrentUpdateInterval: 60
   waterCurrentGridSize: {x: 100, y: 100}
+--- !u!114 &2052074059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052074052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38b2a72dc6b093c46b7c65895858a55f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2062443599
 GameObject:
   m_ObjectHideFlags: 0

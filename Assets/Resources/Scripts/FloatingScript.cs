@@ -26,6 +26,9 @@ public class FloatingScript : MonoBehaviour
     Rigidbody vesselRigidbody;
 
     GameObject waterObject = null;
+
+    //The world position of the ocean vertices
+    [SerializeField] public Vector3[] waterVerticePositionsW;
     //Scripts used to control different aspects of the simulation
     WaterControlScript waterControlScript = null;
     WaterCurrent waterCurrentScript;
@@ -59,6 +62,7 @@ public class FloatingScript : MonoBehaviour
 
         airDrag = 0.0f;
         airAngularDrag = 0.05f;
+
     }
 
     // Update is called once per frame
@@ -69,16 +73,24 @@ public class FloatingScript : MonoBehaviour
             waterCurrentScript = waterObject.GetComponent<WaterCurrent>();
         }
 
+        if (waterObject != null)
+        {
+            waterVerticePositionsW = waterObject.GetComponent<MeshFilter>().mesh.vertices;
+        }
+
 
         totalFloatingPointsSubmerged = 0;
         for (int i = 0; i < floatingPoints.Count; i++)
         {
-            float difference = floatingPoints[i].transform.position.y - waterObject.transform.position.y;
+            float difference = floatingPoints[i].transform.position.y - getYPosOfOcean(floatingPoints[i].transform.position); ;
             if (difference < 0)
             {
                 totalFloatingPointsSubmerged += 1;
                 //Add foce to the floating point that is submerged. The deeper the floating point is the stronger ther force will be.
                 vesselRigidbody.AddForceAtPosition(Vector3.up * bouyancyStrength * (Mathf.Abs(difference)*0.1f), floatingPoints[i].transform.position, ForceMode.Force);
+
+                //Debug.Log("Difference new: " + (Vector3.up * bouyancyStrength * (Mathf.Abs(difference) * 0.001f)));
+                Debug.Log("Water Transformed world pos: " + (waterObject.transform.InverseTransformPoint(floatingPoints[i].transform.position).y) / 1000);
 
 
                 waterCurrentScript.applyWaterCurrent(vesselRigidbody, floatingPoints);
@@ -114,5 +126,56 @@ public class FloatingScript : MonoBehaviour
             vesselRigidbody.drag = airDrag;
             vesselRigidbody.angularDrag = airAngularDrag;
         }
+    }
+
+    //void updateOceanVerticesW()
+    //{
+    //    waterVerticePositionsW = new Vector3[waterObject.GetComponent<MeshFilter>().mesh.vertices.Length];
+
+
+    //   // waterObject.GetComponent<MeshFilter>().mesh.vertices = waterDefaultVerticePositionsW;
+
+    //    for (int i = 0; i < waterObject.GetComponent<MeshFilter>().mesh.vertices.Length; i++)
+    //    {
+    //        waterVerticePositionsW[i] = transform.TransformPoint(waterObject.GetComponent<MeshFilter>().mesh.vertices[i]);
+    //        //Debug.Log("Transformed " + transform.TransformPoint(waterObject.GetComponent<MeshFilter>().mesh.vertices[i]));
+    //        //Debug.Log("Stored " + waterVerticePositionsW[i]);
+    //    }
+    //}
+
+
+    float evaluateWave(Wave w, Vector4 pos, float t)
+    {
+        return w.amp * Mathf.Sin(Vector3.Dot(w.dir, pos) * w.freq + t * w.phase);
+    }
+
+    float getYPosOfOcean(Vector3 Position)
+    {
+        float WaveAmp = 1.01f;
+        float WaveFreq = 0.3f;
+
+        const int NWAVES = 4;
+        Wave[] wave = new Wave[NWAVES]
+        {
+        new Wave(WaveFreq, WaveAmp, 0.5f, new Vector2(0.0f, 0.6f)) ,
+        new Wave(WaveFreq * 2f, WaveAmp*0.5f, 1.3f, new Vector2(0.7f, 0.0f)),
+        new Wave(WaveFreq, WaveAmp, 0.5f, new Vector2(0.1f, 0.2f)),
+        new Wave(WaveFreq* 4f, WaveAmp * 0.5f, 1.3f, new Vector2(0.5f, 0.1f))
+        };
+
+
+        Vector4 Po = new Vector4(Position.x, Position.y, Position.z, 1.0f);
+
+        // sum waves	
+        Po.y = 0.0f;
+        // Compute y displacement and derivative for the waves defined above
+        // Add Code Here (Compute y displacement and derivative)
+
+        for (int j = 0; j < NWAVES; j++)
+        {
+            Po.y += evaluateWave(wave[j], Po, Time.time / 2);
+        }
+
+        return Po.y;
     }
 }
