@@ -26,6 +26,9 @@ public class FloatingScript : MonoBehaviour
     Rigidbody vesselRigidbody;
 
     GameObject waterObject = null;
+
+    //The world position of the ocean vertices
+    [SerializeField] public Vector3[] waterVerticePositionsW;
     //Scripts used to control different aspects of the simulation
     WaterControlScript waterControlScript = null;
     WaterCurrent waterCurrentScript;
@@ -33,7 +36,11 @@ public class FloatingScript : MonoBehaviour
     bool isSubmerged;
 
 
-    
+    Vector3 contactPoint;
+
+    [SerializeField] float difference;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -59,6 +66,7 @@ public class FloatingScript : MonoBehaviour
 
         airDrag = 0.0f;
         airAngularDrag = 0.05f;
+
     }
 
     // Update is called once per frame
@@ -69,11 +77,17 @@ public class FloatingScript : MonoBehaviour
             waterCurrentScript = waterObject.GetComponent<WaterCurrent>();
         }
 
+        if (waterObject != null)
+        {
+            waterVerticePositionsW = waterObject.GetComponent<MeshFilter>().mesh.vertices;
+        }
+
 
         totalFloatingPointsSubmerged = 0;
         for (int i = 0; i < floatingPoints.Count; i++)
         {
-            float difference = floatingPoints[i].transform.position.y - waterObject.transform.position.y;
+            //float difference = floatingPoints[i].transform.position.y - getYPosOfOcean(floatingPoints[i].transform.position);
+            difference = floatingPoints[i].transform.position.y - getClosestVectorOfWater(waterObject, floatingPoints[i].transform.position).y;
             if (difference < 0)
             {
                 totalFloatingPointsSubmerged += 1;
@@ -89,6 +103,10 @@ public class FloatingScript : MonoBehaviour
                     isSubmerged = true;
                     switchDrag();
                 }
+            }
+            else
+            {
+                totalFloatingPointsSubmerged -= 1;
             }
         }
 
@@ -115,4 +133,29 @@ public class FloatingScript : MonoBehaviour
             vesselRigidbody.angularDrag = airAngularDrag;
         }
     }
+
+    public Vector3 getClosestVectorOfWater(GameObject targetMesh, Vector3 point)
+    {
+        point = targetMesh.transform.InverseTransformPoint(point);
+        float minDistance = Mathf.Infinity;
+        Vector3 nearestVertex = Vector3.zero;
+
+        // scan all vertices to find nearest
+        foreach (Vector3 vertex in targetMesh.GetComponent<MeshFilter>().mesh.vertices)
+        {
+            float difference = Vector3.Distance(vertex, point);
+            
+            if (difference < minDistance)
+            {
+                minDistance = difference;
+                nearestVertex = vertex;
+            }
+        }
+
+
+        //Debug.DrawLine(point, targetMesh.transform.TransformPoint(nearestVertex), Color.red);
+        // convert nearest vertex back to world space
+        return targetMesh.transform.TransformPoint(nearestVertex);
+    }
 }
+

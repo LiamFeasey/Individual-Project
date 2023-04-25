@@ -315,7 +315,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 487697465}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 176.6, y: -10.6, z: -40.4}
+  m_LocalPosition: {x: 297, y: -10.6, z: 323.9}
   m_LocalScale: {x: 110, y: 35, z: 160}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -477,6 +477,8 @@ MonoBehaviour:
   airDrag: 3
   airAngularDrag: 1
   bouyancyStrength: 600000
+  waterVerticePositionsW: []
+  difference: 0
 --- !u!54 &512623623
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -564,7 +566,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 512623621}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.44609177, y: 0.788, z: 10.226}
+  m_LocalPosition: {x: 41.5, y: 0.788, z: 48.2}
   m_LocalScale: {x: 9.0022, y: 1, z: 2.6318}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1142,7 +1144,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1773011057}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.61657715, y: 2.21, z: 10.16}
+  m_LocalPosition: {x: 80.37048, y: 2.21, z: 107.494}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1319,7 +1321,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2031215967}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 158, y: -5.5, z: 0}
+  m_LocalPosition: {x: 278.40002, y: -5.5, z: 364.3}
   m_LocalScale: {x: 150, y: 35, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1447,9 +1449,10 @@ GameObject:
   - component: {fileID: 2052074055}
   - component: {fileID: 2052074053}
   - component: {fileID: 2052074058}
+  - component: {fileID: 2052074059}
   m_Layer: 0
   m_Name: waterPlane
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1528,8 +1531,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2052074052}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.3126316}
-  m_LocalScale: {x: 1000, y: 1, z: 1000}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1551,6 +1554,22 @@ MonoBehaviour:
   waterCurrentDirection: 0
   waterCurrentUpdateInterval: 60
   waterCurrentGridSize: {x: 100, y: 100}
+--- !u!114 &2052074059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052074052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38b2a72dc6b093c46b7c65895858a55f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshVertices: []
+  triangles: 
+  planeSize: {x: 1000, y: 1000}
+  planeResolution: 100
 --- !u!1 &2062443599
 GameObject:
   m_ObjectHideFlags: 0
