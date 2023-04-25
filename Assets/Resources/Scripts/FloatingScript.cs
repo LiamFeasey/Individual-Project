@@ -36,6 +36,8 @@ public class FloatingScript : MonoBehaviour
     bool isSubmerged;
 
 
+    Vector3 contactPoint;
+
     
 
     // Start is called before the first frame update
@@ -89,9 +91,6 @@ public class FloatingScript : MonoBehaviour
                 //Add foce to the floating point that is submerged. The deeper the floating point is the stronger ther force will be.
                 vesselRigidbody.AddForceAtPosition(Vector3.up * bouyancyStrength * (Mathf.Abs(difference)*0.1f), floatingPoints[i].transform.position, ForceMode.Force);
 
-                //Debug.Log("Difference new: " + (Vector3.up * bouyancyStrength * (Mathf.Abs(difference) * 0.001f)));
-                Debug.Log("Water Transformed world pos: " + (waterObject.transform.InverseTransformPoint(floatingPoints[i].transform.position).y) / 1000);
-
 
                 waterCurrentScript.applyWaterCurrent(vesselRigidbody, floatingPoints);
 
@@ -128,21 +127,6 @@ public class FloatingScript : MonoBehaviour
         }
     }
 
-    //void updateOceanVerticesW()
-    //{
-    //    waterVerticePositionsW = new Vector3[waterObject.GetComponent<MeshFilter>().mesh.vertices.Length];
-
-
-    //   // waterObject.GetComponent<MeshFilter>().mesh.vertices = waterDefaultVerticePositionsW;
-
-    //    for (int i = 0; i < waterObject.GetComponent<MeshFilter>().mesh.vertices.Length; i++)
-    //    {
-    //        waterVerticePositionsW[i] = transform.TransformPoint(waterObject.GetComponent<MeshFilter>().mesh.vertices[i]);
-    //        //Debug.Log("Transformed " + transform.TransformPoint(waterObject.GetComponent<MeshFilter>().mesh.vertices[i]));
-    //        //Debug.Log("Stored " + waterVerticePositionsW[i]);
-    //    }
-    //}
-
 
     float evaluateWave(Wave w, Vector4 pos, float t)
     {
@@ -164,7 +148,7 @@ public class FloatingScript : MonoBehaviour
         };
 
 
-        Vector4 Po = new Vector4(Position.x, Position.y, Position.z, 1.0f);
+        Vector4 Po = new Vector4(contactPoint.x, contactPoint.y, contactPoint.z, 1.0f);
 
         // sum waves	
         Po.y = 0.0f;
@@ -176,6 +160,14 @@ public class FloatingScript : MonoBehaviour
             Po.y += evaluateWave(wave[j], Po, Time.time / 2);
         }
 
+
         return Po.y;
     }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        contactPoint = collision.GetContact(0).point;
+    }
 }
+
