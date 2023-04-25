@@ -162,11 +162,15 @@ public class DefaultEngine : MonoBehaviour
 
     void checkIsBelowWater()
     {
+        FloatingScript floatingScript = gameObject.transform.parent.parent.GetComponent<FloatingScript>();
+
         var meshFilter = GetComponent<MeshFilter>();
 
         var list = meshFilter.mesh.vertices.Select(transform.TransformPoint).OrderBy(v => v.y).ToList();
 
-        if (list[0].y < 0.0f)
+        Debug.DrawLine(list[0], floatingScript.getClosestVectorOfWater(GameObject.Find("waterPlane"), list[0]), Color.green);
+
+        if (list[0].y < floatingScript.getClosestVectorOfWater(GameObject.Find("waterPlane"), list[0]).y)
         {
             isBelowWater = true;
         }

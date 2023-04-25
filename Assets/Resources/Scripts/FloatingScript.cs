@@ -38,7 +38,9 @@ public class FloatingScript : MonoBehaviour
 
     Vector3 contactPoint;
 
-    
+    [SerializeField] float difference;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -84,7 +86,8 @@ public class FloatingScript : MonoBehaviour
         totalFloatingPointsSubmerged = 0;
         for (int i = 0; i < floatingPoints.Count; i++)
         {
-            float difference = floatingPoints[i].transform.position.y - getYPosOfOcean(floatingPoints[i].transform.position); ;
+            //float difference = floatingPoints[i].transform.position.y - getYPosOfOcean(floatingPoints[i].transform.position);
+            difference = floatingPoints[i].transform.position.y - getClosestVectorOfWater(waterObject, floatingPoints[i].transform.position).y;
             if (difference < 0)
             {
                 totalFloatingPointsSubmerged += 1;
@@ -100,6 +103,10 @@ public class FloatingScript : MonoBehaviour
                     isSubmerged = true;
                     switchDrag();
                 }
+            }
+            else
+            {
+                totalFloatingPointsSubmerged -= 1;
             }
         }
 
@@ -127,50 +134,30 @@ public class FloatingScript : MonoBehaviour
         }
     }
 
-
-    float evaluateWave(Wave w, Vector4 pos, float t)
+    public Vector3 getClosestVectorOfWater(GameObject targetMesh, Vector3 point)
     {
-        return w.amp * Mathf.Sin(Vector3.Dot(w.dir, pos) * w.freq + t * w.phase);
-    }
+        point = targetMesh.transform.InverseTransformPoint(point);
+        float minDistanceSqr = Mathf.Infinity;
+        Vector3 nearestVertex = Vector3.zero;
+        // scan all vertices to find nearest
 
-    float getYPosOfOcean(Vector3 Position)
-    {
-        float WaveAmp = 1.01f;
-        float WaveFreq = 0.3f;
-
-        const int NWAVES = 4;
-        Wave[] wave = new Wave[NWAVES]
+        foreach (Vector3 vertex in targetMesh.GetComponent<MeshFilter>().mesh.vertices)
         {
-        new Wave(WaveFreq, WaveAmp, 0.5f, new Vector2(0.0f, 0.6f)) ,
-        new Wave(WaveFreq * 2f, WaveAmp*0.5f, 1.3f, new Vector2(0.7f, 0.0f)),
-        new Wave(WaveFreq, WaveAmp, 0.5f, new Vector2(0.1f, 0.2f)),
-        new Wave(WaveFreq* 4f, WaveAmp * 0.5f, 1.3f, new Vector2(0.5f, 0.1f))
-        };
-
-
-        Vector4 Po = new Vector4(contactPoint.x, contactPoint.y, contactPoint.z, 1.0f);
-
-        // sum waves	
-        Po.y = 0.0f;
-        // Compute y displacement and derivative for the waves defined above
-        // Add Code Here (Compute y displacement and derivative)
-
-        for (int j = 0; j < NWAVES; j++)
-        {
-            Po.y += evaluateWave(wave[j], Po, Time.time / 2);
+            Vector3 diff = point - vertex;
+            float difference = Vector3.Distance(vertex, point);
+            
+            if (difference < minDistanceSqr)
+            {
+                minDistanceSqr = difference;
+                nearestVertex = vertex;
+            }
         }
+        // convert nearest vertex back to world space
+        //Debug.Log(transform.TransformPoint(nearestVertex));
+        //Debug.Log(targetMesh.transform.TransformPoint(nearestVertex));
 
-
-        return Po.y;
-    }
-
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.transform.tag == "Water")
-        {
-            contactPoint = collision.GetContact(0).point;
-        }
+        Debug.DrawLine(point, targetMesh.transform.TransformPoint(nearestVertex), Color.red);
+        return targetMesh.transform.TransformPoint(nearestVertex);
     }
 }
 

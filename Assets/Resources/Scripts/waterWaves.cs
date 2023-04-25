@@ -46,7 +46,7 @@ public class waterWaves : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-		updateWaves();
+		StartCoroutine(updateWaves());
 	}
 
 
@@ -59,7 +59,7 @@ public class waterWaves : MonoBehaviour
 	/// <summary>
 	/// Update the waves mesh using sine waves.
 	/// </summary>
-	void updateWaves()
+	IEnumerator updateWaves()
 	{
 		///////// TWEAKABLE PARAMETERS //////////////////
 		Mesh updatedWaterMesh = waterMesh.mesh;
@@ -98,6 +98,8 @@ public class waterWaves : MonoBehaviour
 
 
 		waterMesh.mesh = updatedWaterMesh;
+
+		yield return null;
 	}
 
 
@@ -148,9 +150,7 @@ public class waterWaves : MonoBehaviour
 		waterMesh.mesh.vertices = meshVertices.ToArray();
 		waterMesh.mesh.triangles = triangles.ToArray();
 		waterMesh.mesh.RecalculateNormals();
-
-
-
+		//gameObject.GetComponent<MeshCollider>().sharedMesh = waterMesh.mesh;
 	}
 
 

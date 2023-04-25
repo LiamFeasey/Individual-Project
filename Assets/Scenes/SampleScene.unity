@@ -315,7 +315,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 487697465}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 176.6, y: -10.6, z: -40.4}
+  m_LocalPosition: {x: 297, y: -10.6, z: 323.9}
   m_LocalScale: {x: 110, y: 35, z: 160}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -478,6 +478,7 @@ MonoBehaviour:
   airAngularDrag: 1
   bouyancyStrength: 600000
   waterVerticePositionsW: []
+  difference: 0
 --- !u!54 &512623623
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -565,7 +566,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 512623621}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.44609177, y: 0.788, z: 10.226}
+  m_LocalPosition: {x: 80.2, y: 0.788, z: 107.56}
   m_LocalScale: {x: 9.0022, y: 1, z: 2.6318}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1143,7 +1144,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1773011057}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.61657715, y: 2.21, z: 10.16}
+  m_LocalPosition: {x: 80.37048, y: 2.21, z: 107.494}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1320,7 +1321,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2031215967}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 158, y: -5.5, z: 0}
+  m_LocalPosition: {x: 278.40002, y: -5.5, z: 364.3}
   m_LocalScale: {x: 150, y: 35, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1567,7 +1568,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshVertices: []
   triangles: 
-  planeSize: {x: 100, y: 100}
+  planeSize: {x: 1000, y: 1000}
   planeResolution: 100
 --- !u!1 &2062443599
 GameObject:
