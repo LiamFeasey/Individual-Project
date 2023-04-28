@@ -4,20 +4,29 @@ using UnityEngine;
 
 public class FloodingManager : MonoBehaviour
 {
-    MeshFilter shipMeshFilter;
-    GameObject holesObject;//Where the holes will be placed to keep them in one place
+    /// <summary>
+    /// The local game object that is attached to the ship the holes are being attached to,
+    /// this is for organisation purposes
+    /// </summary>
+    GameObject holesObject;
+
+    /// <summary>
+    /// The script that holds the information about the water, such as density and temperature.
+    /// This can affect how much water flows through a hole.
+    /// </summary>
     WaterControlScript waterControlScript;
 
     [Tooltip("The current list of holes in the ship. The less the better!")]
     [SerializeField] List<GameObject> holes = new List<GameObject>();
 
-
-    float timer = 0.0f;//Used to prevent the flooding from running at excessive speeds
+    /// <summary>
+    /// Used to restrict the flooding to a set cycle to prevent excessive flooding
+    /// </summary>
+    float timer = 0.0f;
 
     // Start is called before the first frame update
     void Start()
     {
-        shipMeshFilter = gameObject.GetComponent<MeshFilter>();
         holesObject = gameObject.transform.Find("Holes").gameObject;
         waterControlScript = GameObject.Find("waterPlane").GetComponent<WaterControlScript>();
     }
@@ -87,11 +96,18 @@ public class FloodingManager : MonoBehaviour
 
 
         }
+        else
+        {
+            Debug.Log("That crash wasn't strong enough to form a hole in the hull. Magnitude: " + collision.relativeVelocity.magnitude);
+        }
     }
 
-    ///<summary>
-    ///Calculate the theoretical Discharge to use in place of actual discharge
+    /// <summary>
+    /// Calculate the theoretical discharge of water flowing through a hole based on the depth and size of the hole.
     /// </summary>
+    /// <param name="y">The hydraulic head (depth) of the hole</param>
+    /// <param name="crossSection">The area of the cross section of the hole</param>
+    /// <returns>Total amount of water that's flowed through the hole during this flooding cycle</returns>
     float calculateTheoreticalDischarge(float y, float crossSection)
     {
         if (y < 0)
