@@ -4,28 +4,27 @@ using UnityEngine;
 
 public class ShipControllerScript : MonoBehaviour
 {
-
-    //Array of propulsion points.
     [Header("Component Arrays")]
+    [Tooltip("The list of all the propulsion points attached to this boat")]
     [SerializeField] List<GameObject> PropulsionPoints = new List<GameObject>();
+    /// <summary>
+    /// The game object that all the propulsion points are a child of for organisation
+    /// </summary>
     private GameObject localPropulsionPointsObject;
 
-    //Array of steering points.
+    [Tooltip("The list of all the steering points attached to this boat")]
     [SerializeField] List<GameObject> SteeringPoints = new List<GameObject>();
+    /// <summary>
+    /// The game object that all the steering points are a child of for organisation
+    /// </summary>
     private GameObject localSteeringPointsObject;
 
-    //Array of engines
-    [Tooltip("Engines haven't been implemented yet!")]
-    [SerializeField] List<GameObject> Engines = new List<GameObject>();
-
-    //Array of bouyancy compartments (acts like floating points but can be flooded to pull the ship down instead of providing bouyancy)
-    [Tooltip("Bouyancy Compartments haven't been implemented yet!")]
-    [SerializeField] List<GameObject> BouyancyCompartments = new List<GameObject>();
-
-    //Array of camera positions
+    [Tooltip("The list of all the camera points attached to this boat")]
     [SerializeField] List<GameObject> CameraPoints = new List<GameObject>();
+    /// <summary>
+    /// The game object that all the camera points are a child of for organisation
+    /// </summary>
     private GameObject localCameraPointsObject;
-
 
 
     [Space(25)]
@@ -54,6 +53,7 @@ public class ShipControllerScript : MonoBehaviour
     [SerializeField] float currentSteering = 0;
 
     //Engine ignition on?
+    [Tooltip("Stores if the ignition is on or not")]
     [SerializeField] bool engineIgnitionOn = false;
 
     [Tooltip("How fast the ship is moving based on how fair it's moved since the last update")]
@@ -277,10 +277,6 @@ public class ShipControllerScript : MonoBehaviour
         if (engineIgnitionOn)
         {
             //Add propulsion based on throttle and steering
-            //for (int i = 0; i < PropulsionPoints.Count; i++)
-            //{
-            //    PropulsionPoints[i].GetComponent<Rigidbody>().AddRelativeForce(Vector3.down * (currentThrottle * totalHorsePower), ForceMode.Force);
-            //}
             for (int i = 0; i < SteeringPoints.Count; i++)
             {
                 SteeringPoints[i].GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * ((currentSteering + steeringTrim) * (speed * 0.5f)), ForceMode.Force);
@@ -290,7 +286,11 @@ public class ShipControllerScript : MonoBehaviour
 
     }
 
-    //Used when the user doesn't want the camera to roll and pitch with the ship.
+    /// <summary>
+    /// Called when the player doesn't want the camera to roll and pitch with the boat
+    /// </summary>
+    /// <param name="inputQuaternion">The quaternion representing the current rotation values of the camera</param>
+    /// <returns>A new quaternion with stabilised X and Z parameters</returns>
     Quaternion updatePlayerCameraRotation(Quaternion inputQuaternion)
     {
         float x = inputQuaternion.x;
@@ -304,16 +304,28 @@ public class ShipControllerScript : MonoBehaviour
         return updatedQuaternion;
     }
 
+    /// <summary>
+    /// Get the current value of the throttle
+    /// </summary>
+    /// <returns>Current value of the throttle</returns>
     public float getCurrentThrottle()
     {
         return currentThrottle;
     }
 
+    /// <summary>
+    /// Get the boats current speed
+    /// </summary>
+    /// <returns>The ships current speed</returns>
     public float getSpeed()
     {
         return speed;
     }
 
+    /// <summary>
+    /// Get the status of the engine ignition
+    /// </summary>
+    /// <returns>The current status of the engine ignition</returns>
     public bool getIgnition()
     {
         return engineIgnitionOn;

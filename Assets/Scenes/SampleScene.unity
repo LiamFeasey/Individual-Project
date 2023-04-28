@@ -315,7 +315,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 487697465}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 297, y: -10.6, z: 323.9}
+  m_LocalPosition: {x: 147.2, y: -10.6, z: 108.8}
   m_LocalScale: {x: 110, y: 35, z: 160}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -477,7 +477,6 @@ MonoBehaviour:
   airDrag: 3
   airAngularDrag: 1
   bouyancyStrength: 600000
-  waterVerticePositionsW: []
   difference: 0
 --- !u!54 &512623623
 Rigidbody:
@@ -566,7 +565,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 512623621}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 41.5, y: 0.788, z: 48.2}
+  m_LocalPosition: {x: -0.02, y: 0.788, z: 0.89}
   m_LocalScale: {x: 9.0022, y: 1, z: 2.6318}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -592,8 +591,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PropulsionPoints: []
   SteeringPoints: []
-  Engines: []
-  BouyancyCompartments: []
   CameraPoints: []
   totalHorsePower: 100
   throttleIncreaseSpeed: 0.1
@@ -665,7 +662,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attachedObjects: []
   nearbyObjects: []
-  automaticAttachment: 0
   shipControllerScript: {fileID: 0}
 --- !u!1 &597095134
 GameObject:
@@ -876,6 +872,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1047985716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1047985717}
+  m_Layer: 0
+  m_Name: FloatingPoint1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1047985717
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047985716}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1266130429}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1080777875
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,6 +933,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 452215792}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1266130428
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1266130429}
+  m_Layer: 0
+  m_Name: FloatingPoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1266130429
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1266130428}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1047985717}
+  m_Father: {fileID: 1773011062}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1595825665
 GameObject:
@@ -1050,6 +1109,7 @@ GameObject:
   - component: {fileID: 1773011060}
   - component: {fileID: 1773011059}
   - component: {fileID: 1773011058}
+  - component: {fileID: 1773011063}
   m_Layer: 0
   m_Name: TestObject
   m_TagString: Untagged
@@ -1144,13 +1204,34 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1773011057}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 80.37048, y: 2.21, z: 107.494}
+  m_LocalPosition: {x: 0.049998283, y: 2.21, z: 0.83999825}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1266130429}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1773011063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773011057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbde9ae28fc046e4bbefc43eef4a4925, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floatingPoints: []
+  totalFloatingPointsSubmerged: 0
+  underWaterDrag: 3
+  underWaterAngularDrag: 1
+  airDrag: 0
+  airAngularDrag: 0.05
+  bouyancyStrength: 200
+  difference: 0
 --- !u!1 &1873850024
 GameObject:
   m_ObjectHideFlags: 0
@@ -1321,7 +1402,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2031215967}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 278.40002, y: -5.5, z: 364.3}
+  m_LocalPosition: {x: 128.6, y: -5.5, z: 149.19998}
   m_LocalScale: {x: 150, y: 35, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1472,7 +1553,6 @@ MonoBehaviour:
   dynamicViscosity: 0
   temperature: -50
   density: 0
-  murkiness: 0
 --- !u!23 &2052074055
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1552,7 +1632,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   simpleWaterCurrent: 0
   waterCurrentDirection: 0
-  waterCurrentUpdateInterval: 60
   waterCurrentGridSize: {x: 100, y: 100}
 --- !u!114 &2052074059
 MonoBehaviour:
@@ -1568,8 +1647,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshVertices: []
   triangles: 
-  planeSize: {x: 1000, y: 1000}
-  planeResolution: 100
+  planeSize: {x: 100, y: 100}
+  planeResolution: 50
 --- !u!1 &2062443599
 GameObject:
   m_ObjectHideFlags: 0
@@ -1698,10 +1777,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f3cf4ea4b95f15438c62c6750db1278, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cylinders: 3
-  cylinderDisplacement: 2
+  cylinders: 1
+  cylinderDisplacement: 1
   engineDisplacement: 0
-  torque: 0
   RPM: 0
   fuelUsage: 0
   engineFuelType: 0
@@ -1710,6 +1788,7 @@ MonoBehaviour:
     specificEnergy: 0
     energyDensity: 0
   fuelAvailable: 1
+  throttle: 0
   ignition: 0
   propellerSize: 1
   resistance: 0
@@ -1717,6 +1796,7 @@ MonoBehaviour:
   isBelowWater: 0
   shipController: {fileID: 0}
   engineController: {fileID: 0}
+  waterControlScript: {fileID: 0}
 --- !u!1 &2088387474
 GameObject:
   m_ObjectHideFlags: 0
